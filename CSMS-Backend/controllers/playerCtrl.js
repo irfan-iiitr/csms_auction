@@ -7,11 +7,11 @@ import asyncHandler from 'express-async-handler';
 // @route   POST /api/players
 // @access  Public
 export const createPlayer = asyncHandler(async (req, res) => {
-  const { name, year, SportName, description, phoneNumber, socialMedia, achievements, basePrice,teamLeader } = req.body;
+  const { name, year, SportName, description, phoneNumber, socialMedia, achievements, basePrice, teamLeader } = req.body;
 
   const isTeamLeader = teamLeader === true;
 
-  const newPlayer = await Player.create({ name, year, SportName, description, phoneNumber, socialMedia, achievements, basePrice ,teamLeader: isTeamLeader });
+  const newPlayer = await Player.create({ name, year, SportName, description, phoneNumber, socialMedia, achievements, basePrice, teamLeader: isTeamLeader });
   res.status(201).json(newPlayer);
 });
 
@@ -39,19 +39,19 @@ export const getPlayerById = asyncHandler(async (req, res) => {
 // @route   PUT /api/players/:id
 // @access  Public
 export const updatePlayerById = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const data = req.body;
-    
-    const updatedPlayer = await Player.findByIdAndUpdate(id,data,{ new: true }).lean().exec();
-    
-    if (!updatedPlayer) {
-      res.status(404);
-      throw new Error('Player not found');
-    }
-    
-    res.json(updatedPlayer);
-  });
-  
+  const { id } = req.params;
+  const data = req.body;
+
+  const updatedPlayer = await Player.findByIdAndUpdate(id, data, { new: true }).lean().exec();
+
+  if (!updatedPlayer) {
+    res.status(404);
+    throw new Error('Player not found');
+  }
+
+  res.json(updatedPlayer);
+});
+
 
 // @desc    Delete a player by ID
 // @route   DELETE /api/players/:id
@@ -71,18 +71,30 @@ export const deletePlayerById = asyncHandler(async (req, res) => {
 // @access  Public
 export const getPlayersBySportsName = asyncHandler(async (req, res) => {
   // console.log(req.body.sportName);
- 
-   const sport = await Sports.findOne({ name: req.body.sportName });
-   if (!sport) {
-     res.status(404);
-     throw new Error('Sport not found');
-   }
- 
-   const players = await Player.find({ SportName: sport._id });
-   if (!players) {
-     res.status(404);
-     throw new Error('Players not found');
-   }
- 
-   res.json(players);
- });
+
+  const sport = await Sports.findOne({ name: req.body.sportName });
+  if (!sport) {
+    res.status(404);
+    throw new Error('Sport not found');
+  }
+
+  const players = await Player.find({ SportName: sport._id });
+  if (!players) {
+    res.status(404);
+    throw new Error('Players not found');
+  }
+
+  res.json(players);
+});
+
+
+export const isTeamLeaderVerify = asyncHandler(async (req, res) => {
+  const userEmail = req.body.email;
+  const response = await Player.findOne({ email: userEmail });
+
+  if (!response || response.length === 0) {
+    res.send({ msg: response.teamLeader });
+  } else {
+    res.send({ msg: response.teamLeader, player: response });
+  }
+});

@@ -28,7 +28,7 @@ function Page() {
     return (
         <div className="flex flex-col justify-center h-screen">
             <h1 className="text-center">Auction System</h1>
-            <div className="flex flex-wrap justify-center">
+            <div className="flex flex-wrap justify-center object-contain">
                 {sports.map((sport, index) => (
                     <SportsCard key={index} name={sport.name} url={getImageUrl(sport.name)}/>
                 ))}

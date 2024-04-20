@@ -45,7 +45,11 @@ const playerSchema = new mongoose.Schema({
   teamLeader:{
     type: Boolean,
     default: false
-  }
+  },
+  email:{
+    type: String,
+    required:true
+  },
 },{
     timestamps:true
 });

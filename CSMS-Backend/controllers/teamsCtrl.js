@@ -60,6 +60,18 @@ export const deleteTeamById = asyncHandler(async (req, res) => {
 });
 
 
+export const getTeamByTeamLeaderId = (asyncHandler(async (req, res) => {
+     
+  const team = await Team.findOne({teamLeader:req.params.id});
+  if (!team) {
+    res.json({msg:false});
+  }
+  res.json({msg:true,team});
+
+}));
+
+
+
 export const isTeamLeader = asyncHandler(async (req, res) => {
     const response = await Team.findOne({teamLeader:req.params.id});
     if(response){

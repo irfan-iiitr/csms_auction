@@ -1,3 +1,19 @@
-body{
+body {
     background-color: rgb(44, 44, 44);
+}
+
+.main-div {
+    transition: all 0.65s;
+
+    &:hover {
+        border: 5px solid rgb(42, 221, 231);
+        border-radius: 100%;
+        .sports-icon {
+            transform: rotateY(180deg);
+        }
+    }
+}
+
+.sports-icon{
+    transition: all 0.65s;
 }
